@@ -7,7 +7,7 @@ function selfUpdate {
     if ! cmp -s init.sh init.sh.new; then
         mv init.sh.new init.sh
         chmod +x init.sh
-        exec ./init.sh
+        bash ./init.sh  # Removed `exec` to prevent shell replacement
     else
         rm init.sh.new
     fi
@@ -26,6 +26,7 @@ function optimizeJavaServer {
     echo "view-distance=6" >> server.properties
 }
 
+# Check and create directories and files if needed
 if [ ! -d "plugins" ]; then
     mkdir -p plugins
 fi
