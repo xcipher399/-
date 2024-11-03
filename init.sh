@@ -1,15 +1,15 @@
 #!/bin/bash
 
-INSTALL_SCRIPT_URL="https://raw.githubusercontent.com/xcipher399/-/refs/heads/main/init.sh"
+INSTALL_SCRIPT_URL="https://raw.githubusercontent.com/xcipher399/-/main/init.sh"
 
 function selfUpdate {
-    curl -s -o init.sh.new "${INSTALL_SCRIPT_URL}"
-    if ! cmp -s init.sh init.sh.new; then
-        mv init.sh.new init.sh
-        chmod +x init.sh
-        bash ./init.sh  # Removed `exec` to prevent shell replacement
+    curl -s -o install.sh.new "${INSTALL_SCRIPT_URL}"
+    if ! cmp -s install.sh install.sh.new; then
+        mv install.sh.new install.sh
+        chmod +x install.sh
+        exec ./install.sh
     else
-        rm init.sh.new
+        rm install.sh.new
     fi
 }
 
@@ -22,11 +22,14 @@ function forceStuffs {
     echo "motd=This server is hosted in Hosthub, Create your server in hosthub today." >> server.properties
 }
 
+function launchJavaServer {
+    java -Xms128M -XX:MaxRAMPercentage=95.0 -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -jar {{SERVER_JARFILE}}
+}
+
 function optimizeJavaServer {
     echo "view-distance=6" >> server.properties
 }
 
-# Check and create directories and files if needed
 if [ ! -d "plugins" ]; then
     mkdir -p plugins
 fi
@@ -38,4 +41,5 @@ if [ ! -f "server-icon.png" ]; then
 fi
 
 forceStuffs
+launchJavaServer
 optimizeJavaServer
