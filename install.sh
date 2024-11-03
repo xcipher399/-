@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALL_SCRIPT_URL="https://raw.githubusercontent.com/xcipher399/-/main/init.sh"
+INSTALL_SCRIPT_URL="https://raw.githubusercontent.com/xcipher399/-/main/install.sh"
 
 function selfUpdate {
     curl -s -o install.sh.new "${INSTALL_SCRIPT_URL}"
