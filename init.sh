@@ -3,13 +3,13 @@
 INSTALL_SCRIPT_URL="https://raw.githubusercontent.com/xcipher399/-/main/init.sh"
 
 function selfUpdate {
-    curl -s -o install.sh.new "${INSTALL_SCRIPT_URL}"
-    if ! cmp -s install.sh install.sh.new; then
-        mv install.sh.new install.sh
-        chmod +x install.sh
-        exec ./install.sh
+    curl -s -o init.sh.new "${INSTALL_SCRIPT_URL}"
+    if ! cmp -s init.sh init.sh.new; then
+        mv init.sh.new init.sh
+        chmod +x init.sh
+        exec ./init.sh
     else
-        rm install.sh.new
+        rm init.sh.new
     fi
 }
 
